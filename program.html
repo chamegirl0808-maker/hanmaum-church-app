@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>사역 안내 · 한마음제자교회</title><link rel="stylesheet" href="style.css"><script src="photos.js"></script><script src="programs.js"></script></head><body><header class="top"><img data-photo="logo" alt=""><b>한마음제자교회</b></header>
+<main id="pg"></main>
+<nav class="tab"><a href="index.html"><span>🏠</span>홈</a><a href="index.html#about"><span>⛪</span>교회소개</a><a href="ministry.html" class="on"><span>🤝</span>사역</a><a href="jubo.html"><span>📖</span>주보</a><a href="index.html#more"><span>☰</span>더보기</a></nav>
+<script>
+const id=new URLSearchParams(location.search).get("id"),p=PROGRAMS[id],el=document.getElementById("pg");
+if(!p){el.innerHTML='<section><p>사역을 찾을 수 없습니다.</p><a class="back" href="ministry.html">← 사역 목록으로</a></section>';}
+else{const m=MINISTRIES[p.ministry];document.title=p.title+" · 한마음제자교회";
+el.innerHTML=`<div class="phero" style="background-image:url('${p.photos[0]}')"></div><section class="pdet">
+<a class="back" href="ministry.html#${p.ministry}">← 사역 목록으로</a>
+<a class="pmin" href="ministry.html#${p.ministry}">${m.name}</a><h1 class="serif">${p.title}</h1>
+<div class="card"><p>${p.desc}</p>${p.note?`<p class="pnote">📌 ${p.note}</p>`:""}</div>
+<div class="pverse card"><b>관련 말씀</b><span>${m.verse}</span></div>
+<div class="gal">${p.photos.slice(1).map(s=>`<img src="${s}" alt="">`).join("")}</div>
+<a class="back big" href="ministry.html#${p.ministry}">← 사역 목록으로 돌아가기</a></section>`;}
+</script></body></html>
