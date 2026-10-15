@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>이번 주 주보 · 한마음제자교회</title><link rel="stylesheet" href="style.css"><script src="photos.js"></script><script src="jubo-loader.js"></script>
+<style>.jb h3{font-size:21px;color:var(--navy);margin:4px 0 8px}.jb .sec{font-weight:700;color:#c0392b;margin:14px 0 6px;font-size:19px}.jb .ord{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:19px}.jb .ord small{color:var(--mute);font-size:16px}.jb ul{padding-left:22px}.jb li{margin:8px 0;white-space:pre-line}.jb .hl{font-size:22px;text-align:center;color:var(--navy)}.jb .hl b{color:#c0392b}</style></head>
+<body><header class="top"><img data-photo="logo" alt=""><b>한마음제자교회</b></header>
+<section><h2 id="jt">이번 주 주보</h2><div id="jb" class="jb"><div class="card" style="padding:18px">주보를 불러오는 중입니다…</div></div></section>
+<nav class="tab"><a href="index.html" class="H"><span>🏠</span>홈</a><a href="index.html#about" class="A"><span>⛪</span>교회소개</a><a href="ministry.html" class="M"><span>🤝</span>사역</a><a href="jubo.html" class="on"><span>📖</span>주보</a><a href="#more" class="X"><span>☰</span>더보기</a></nav>
+<script>
+function e(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+loadLatestJubo().then(function(r){var J=r.jubo,C=juboClean,h="";
+document.getElementById("jt").textContent=juboTitle(r.date);
+h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3 class="serif">'+e(juboTitle(r.date))+'</h3><p>'+e(J.issue||"")+'</p><p>주일 낮 예배 '+e(C(J.service&&J.service.time))+' · '+e(C(J.service&&J.service.leader))+'</p></div>';
+if(J.newsHeadline)h+='<div class="card" style="padding:18px;margin-bottom:14px"><p class="hl serif">'+J.newsHeadline.map(function(t,i){return i%2?"<b>"+e(t)+"</b>":e(t)}).join("")+'</p></div>';
+if(J.praise)h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>경배와 찬양</h3><p>'+e(J.praise)+'</p></div>';
+if(J.order){h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>예배 순서</h3>';J.order.forEach(function(o){if(o.section){h+='<div class="sec">'+e(o.section)+'</div>';return}var m=C(o.mid);h+='<div class="ord"><span>'+e(o.name)+(m?' <small>'+e(m)+'</small>':'')+'</span><small>'+e(C(o.by))+'</small></div>'});h+='</div>'}
+if(J.news&&J.news.length)h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>교회 소식</h3><ul>'+J.news.map(function(n){return"<li>"+e(n)+"</li>"}).join("")+'</ul></div>';
+if(J.prayers&&J.prayers.length)h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>함께 기도합시다</h3><ul>'+J.prayers.map(function(n){return"<li>"+e(n)+"</li>"}).join("")+'</ul></div>';
+document.getElementById("jb").innerHTML=h;
+}).catch(function(){document.getElementById("jb").innerHTML='<div class="card" style="padding:18px">주보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</div>'});
+</script></body></html>
