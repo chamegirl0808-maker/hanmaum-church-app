@@ -10,9 +10,11 @@ function weeks(){
   var b=load(BASE+"current.js").then(function(){return (window.JUBO_WEEKS||[]).concat(window.JUBO_CURRENT||[])}).catch(function(){return []});
   return Promise.all([a,b]).then(function(r){return r[0].concat(r[1])});
 }
+// App display only: hide any 원로목사 mention from bulletin data (the bulletin data itself is never edited).
+function noEmeritus(o){if(typeof o=="string")return o.replace(/\s*[·,\/]?\s*원로\s*목사\s*[가-힣]{0,4}/g,"").trim();if(Array.isArray(o))return o.map(noEmeritus).filter(function(x){return x!==""});if(o&&typeof o=="object"){var r={};for(var k in o)r[k]=noEmeritus(o[k]);return r}return o;}
 function uniq(l){var o={};l.forEach(function(x){if(/^\d{4}-\d{2}-\d{2}$/.test(x))o[x]=1});return Object.keys(o).sort();}
 window.juboWeeks=function(){return weeks().then(function(l){var lim=sunday();return uniq(l).filter(function(x){return x<=lim}).reverse();});};
-window.loadJubo=function(d){window.JUBO=null;return load(BASE+d+".js").then(function(){if(!window.JUBO)throw new Error("empty");return {date:d,jubo:window.JUBO};});};
+window.loadJubo=function(d){window.JUBO=null;return load(BASE+d+".js").then(function(){if(!window.JUBO)throw new Error("empty");return {date:d,jubo:noEmeritus(window.JUBO)};});};
 window.loadLatestJubo=function(want){return weeks().then(function(l){var d=(want&&/^\d{4}-\d{2}-\d{2}$/.test(want))?want:pick(l);if(!d)throw new Error("no bulletin");var lim=sunday(),c=uniq(l).filter(function(x){return x<d}).reverse();
 function tryN(i){var x=i<0?d:c[i];if(!x)throw new Error("no bulletin");return loadJubo(x).catch(function(){return tryN(i+1)});}return tryN(-1);});};
 window.juboClean=function(s){return String(s||"").replace(/\[[^\]]*\]/g,"").replace(/\s+/g," ").trim();};
