@@ -5,14 +5,16 @@
 <nav class="tab"><a href="index.html" class="H"><span>🏠</span>홈</a><a href="index.html#about" class="A"><span>⛪</span>교회소개</a><a href="ministry.html" class="M"><span>🤝</span>사역</a><a href="jubo.html" class="on"><span>📖</span>주보</a><a href="#more" class="X"><span>☰</span>더보기</a></nav>
 <script>
 function e(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-loadLatestJubo().then(function(r){var J=r.jubo,C=juboClean,h="";
+var want=(location.search.match(/[?&]d=(\d{4}-\d{2}-\d{2})/)||[])[1];
+loadLatestJubo(want).then(function(r){var J=r.jubo,C=juboClean,h="";
 document.getElementById("jt").textContent=juboTitle(r.date);
-h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3 class="serif">'+e(juboTitle(r.date))+'</h3><p>'+e(J.issue||"")+'</p><p>주일 낮 예배 '+e(C(J.service&&J.service.time))+' · '+e(C(J.service&&J.service.leader))+'</p></div>';
+h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3 class="serif">'+e(juboTitle(r.date))+'</h3><p>'+e(J.issue||"")+(J.season?' · '+e(J.season):'')+'</p><p>주일 낮 예배 '+e(C(J.service&&J.service.time))+' · '+e(C(J.service&&J.service.leader))+'</p></div>';
 if(J.newsHeadline)h+='<div class="card" style="padding:18px;margin-bottom:14px"><p class="hl serif">'+J.newsHeadline.map(function(t,i){return i%2?"<b>"+e(t)+"</b>":e(t)}).join("")+'</p></div>';
 if(J.praise)h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>경배와 찬양</h3><p>'+e(J.praise)+'</p></div>';
 if(J.order){h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>예배 순서</h3>';J.order.forEach(function(o){if(o.section){h+='<div class="sec">'+e(o.section)+'</div>';return}var m=C(o.mid);h+='<div class="ord"><span>'+e(o.name)+(m?' <small>'+e(m)+'</small>':'')+'</span><small>'+e(C(o.by))+'</small></div>'});h+='</div>'}
 if(J.news&&J.news.length)h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>교회 소식</h3><ul>'+J.news.map(function(n){return"<li>"+e(n)+"</li>"}).join("")+'</ul></div>';
 if(J.prayers&&J.prayers.length)h+='<div class="card" style="padding:18px;margin-bottom:14px"><h3>함께 기도합시다</h3><ul>'+J.prayers.map(function(n){return"<li>"+e(n)+"</li>"}).join("")+'</ul></div>';
 document.getElementById("jb").innerHTML=h;
+juboWeeks().then(function(w){if(!w.length)return;var x='<div class="card" style="padding:18px;margin-bottom:14px"><h3>지난 주보</h3><ul>'+w.map(function(d){return '<li><a href="jubo.html?d='+d+'"'+(d==r.date?' style="font-weight:700;color:#c0392b"':'')+'>'+e(juboTitle(d))+(d==r.date?' (보는 중)':'')+'</a></li>'}).join("")+'</ul></div>';document.getElementById("jb").insertAdjacentHTML("beforeend",x)});
 }).catch(function(){document.getElementById("jb").innerHTML='<div class="card" style="padding:18px">주보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</div>'});
 </script></body></html>

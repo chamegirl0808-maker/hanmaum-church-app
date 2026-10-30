@@ -10,7 +10,11 @@ function weeks(){
   var b=load(BASE+"current.js").then(function(){return (window.JUBO_WEEKS||[]).concat(window.JUBO_CURRENT||[])}).catch(function(){return []});
   return Promise.all([a,b]).then(function(r){return r[0].concat(r[1])});
 }
-window.loadLatestJubo=function(){return weeks().then(function(l){var d=pick(l);if(!d)throw new Error("no bulletin");return load(BASE+d+".js").then(function(){return {date:d,jubo:window.JUBO};});});};
+function uniq(l){var o={};l.forEach(function(x){if(/^\d{4}-\d{2}-\d{2}$/.test(x))o[x]=1});return Object.keys(o).sort();}
+window.juboWeeks=function(){return weeks().then(function(l){var lim=sunday();return uniq(l).filter(function(x){return x<=lim}).reverse();});};
+window.loadJubo=function(d){window.JUBO=null;return load(BASE+d+".js").then(function(){if(!window.JUBO)throw new Error("empty");return {date:d,jubo:window.JUBO};});};
+window.loadLatestJubo=function(want){return weeks().then(function(l){var d=(want&&/^\d{4}-\d{2}-\d{2}$/.test(want))?want:pick(l);if(!d)throw new Error("no bulletin");var lim=sunday(),c=uniq(l).filter(function(x){return x<d}).reverse();
+function tryN(i){var x=i<0?d:c[i];if(!x)throw new Error("no bulletin");return loadJubo(x).catch(function(){return tryN(i+1)});}return tryN(-1);});};
 window.juboClean=function(s){return String(s||"").replace(/\[[^\]]*\]/g,"").replace(/\s+/g," ").trim();};
 window.juboTitle=function(d){var p=d.split("-");return p[0]+"년 "+(+p[1])+"월 "+(+p[2])+"일 주보";};
 })();
