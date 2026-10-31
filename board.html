@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>교회게시판 · 한마음제자교회</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&display=swap"><link rel="stylesheet" href="style.css"><script src="photos.js"></script>
+<style>.bd h3{font-size:22px;color:var(--navy);margin:0 0 10px}.bd ol{list-style:none;padding:0;margin:0}.bd li{display:flex;gap:12px;align-items:baseline;padding:12px 2px;border-bottom:1px dashed var(--line);font-size:21px}.bd li:last-child{border:0}.bd li b{color:var(--coral);font-weight:900;white-space:nowrap;min-width:5.6em}.bd .note{font-size:16px;color:var(--mute);margin-top:8px}</style></head><body><header class="top"><a class="brand" href="index.html"><img data-photo="logo" alt=""><span class="bt"><b>한마음제자교회</b><small>HANMAEUM DISCIPLE CHURCH</small></span></a></header>
+<section class="pdet"><a class="back" href="index.html">← 홈으로</a><h2 id="bt">교회게시판</h2><div id="board"><p>불러오는 중…</p></div></section>
+<nav class="tab"><a href="index.html" class="on"><span>🏠</span>홈</a><a href="index.html#about"><span>⛪</span>교회소개</a><a href="ministry.html"><span>🤝</span>사역</a><a href="jubo.html"><span>📖</span>주보</a><a href="index.html#more"><span>☰</span>더보기</a></nav>
+<script src="board.js"></script><script>
+(function(){var B=window.BOARD||{},k=B.current,M=B.months&&B.months[k];
+function e(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+if(!M){board.innerHTML="<p>게시판 내용이 아직 없습니다.</p>";return}
+bt.textContent=M.title;document.title=M.title+" · 한마음제자교회";
+var h="";(M.sections||[]).forEach(function(s){h+='<div class="card bd" style="margin-bottom:14px"><h3>'+e(s.title)+'</h3><ol>'+s.items.map(function(r){return'<li><b>'+e(r[0])+'</b><span>'+e(r[1])+'</span></li>'}).join("")+'</ol>'+(s.note?'<p class="note">'+e(s.note)+'</p>':'')+'</div>'});
+board.innerHTML=h;})();
+</script></body></html>
