@@ -6,7 +6,7 @@ window.PHOTOS = {
   leader:   "img/leader.jpg",    // 영적 리더 훈련
   together: "img/together.jpg",  // 평신도 동역
   logo:     "img/logo.png",
-  map:      "img/map.svg"
+  map:      "img/church-map.svg"
 };
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-photo]").forEach(el => {
